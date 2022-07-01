@@ -21,4 +21,4 @@ after_success:
   # 빌드된 각 이미지들을 도커 허브에 PUSH
   - docker push ojs835/docker-frontend
   - docker push ojs835/docker-backend
-  - docker push ojs935/docker-nginx
+  - docker push ojs835/docker-nginx
