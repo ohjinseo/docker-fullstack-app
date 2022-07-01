@@ -1,35 +1,35 @@
 version: "3"
 services:
   frontend:
-    build:
-      dockerfile: Dockerfile.dev
-      context: ./frontend
+    image: ojs835/docker-frontend
     volumes:
       - /app/node_modules
       - ./frontend:/app
     stdin_open: true
+    mem_limit: 128m
 
   nginx:
     # 서버가 종료될 때 항상 재시작
     restart: always
-    build: 
-      dockerfile: Dockerfile
-      context: ./nginx
+    image: ojs835/docker-nginx
     ports:
-      - "3000:80"
+      - "80:80"
+    mem_limit: 128m
+    links:
+      - frontend
+      - backend
 
   backend:
-    build: 
-      dockerfile: Dockerfile.dev
-      context: ./backend
+    image: ojs835/docker-backend
     container_name: app_backend
     volumes:
       - /app/node_modules
       - ./backend:/app
     environment:
-      MYSQL_HOST: mysql
+      MYSQL_HOST: docker-fullstack-mysql.c8yidri1hsl5.us-east-1.rds.amazonaws.com
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: ohjinseo1234
       MYSQL_DATABASE: myapp
       MYSQL_PORT: 3306
+    mem_limit: 128m
 
