@@ -42,9 +42,10 @@ function App() {
         <img src={logo} className="App-logo" alt="logo" />
         
         <div className="container">
-          {lists && lists.map((list, idx) => {
-            <li key={idx}>list.value</li>
-          })}
+          {lists && lists.map((list, index) => (
+            <li key={index}>{list.value} </li>
+          ))}
+          <br />
 
 
           <form className="example" onSubmit={submitHandler}>
