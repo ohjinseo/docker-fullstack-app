@@ -1,0 +1,35 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions":[
+        {
+            "name":"frontend",
+            "image":"ojs835/docker-frontend",
+            "hostname":"frontend",
+            "essential": false,
+            "memory":128
+        },
+
+        {
+            "name":"backend",
+            "image":"ojs835/docker-backend",
+            "hostname":"backend",
+            "essential": false,
+            "memory":128
+        },
+
+        {
+            "name":"nginx",
+            "image":"ojs835/docker-nginx",
+            "hostname":"nginx",
+            "essential": true,
+            "memory":128,
+            "portMappings":[
+                {
+                    "hostPort":80,
+                    "containerPort":80
+                }
+            ],
+            "links":["frontend", "backend"]
+        }
+    ]
+}

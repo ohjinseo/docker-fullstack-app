@@ -5,6 +5,7 @@ sudo: required
 services:
   - docker
 
+# 테스트를 위해 프론트엔드 개발 버전 이미지 빌드
 before_install:
   - docker build -t ojs835/react-test-app -f ./frontend/Dockerfile.dev ./frontend
 
@@ -22,3 +23,16 @@ after_success:
   - docker push ojs835/docker-frontend
   - docker push ojs835/docker-backend
   - docker push ojs835/docker-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-1"
+  app: "docker-fullstack-app"
+  env: "Dockerfullstackapp-env"
+  bucket_name: "elasticbeanstalk-us-east-1-744306947927"
+  bucket_path: "docker-fullstack-app"
+  on:
+    branch: master
+
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_ACCESS_KEY
