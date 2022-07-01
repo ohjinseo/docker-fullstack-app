@@ -1,0 +1,24 @@
+language: generic
+
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t ojs835/react-test-app -f ./frontend/Dockerfile.dev ./frontend
+
+script:
+  - docker run -e CI=true ojs835/react-test-app npm run test
+
+# 테스트가 성공되면 운영버전 이미지 빌드
+after_success:
+  - docker build -t ojs835/docker-frontend ./frontend
+  - docker build -t ojs835/docker-backend ./backend
+  - docker build -t ojs835/docker-nginx ./nginx
+  # 도커 허브에 로그인
+  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" -- password-stdin
+  # 빌드된 각 이미지들을 도커 허브에 PUSH
+  - docker push ojs835/docker-frontend
+  - docker push ojs835/docker-backend
+  - docker push ojs935/docker-nginx
